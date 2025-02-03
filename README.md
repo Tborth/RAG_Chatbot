@@ -1,6 +1,6 @@
 
 User Guide for RAG (Retrieval-Augmented Generation) Project
-![screenshot](images/screenshot1.png)
+![screenshot](djangoAI-main/images/screenshot1.png)
 cd djangoAI-main
 
 1. Setup and Configuration
@@ -39,7 +39,7 @@ python3 manage.py runserver 0.0.0.0:8001
 This will start the API server at http://localhost:8001.
 
 Step 3: Upload Documents
-![screenshot](images/screenshot2.png)
+![screenshot](djangoAI-main/images/screenshot2.png)
 
 Navigate to the /RAG_Chatbot endpoint for upload.
 
@@ -48,7 +48,7 @@ Upload a document (PDF, TXT, CSV, etc.).
 The document will be processed and stored in the vector database (FAISS/ChromaDB).
 
 Step 4: Querying the RAG System
-![screenshot](images/screenshot3.png)
+![screenshot](djangoAI-main/images/screenshot3.png)
 Use the /RAG_Chatbot/uploaded_query_view.
 
 Provide a natural language query.
