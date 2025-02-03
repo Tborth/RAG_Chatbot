@@ -1,0 +1,28 @@
+{% extends 'home/base.html' %}
+ 
+{% block title %}Home Page{% endblock %}
+ 
+{% block content %}
+<main class="container mx-auto mt-10 px-4">
+    <!-- Welcome Section -->
+    <h1 class="text-center text-3xl font-semibold text-green-500">Welcome to the Home Page</h1>
+    <p class="text-center text-lg text-gray-500">Explore our collection of AI and ML tools. Select a tool from the menu above and get started!</p>
+    
+    <!-- Tools Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+
+       
+        
+        <!-- RAG Chatbot -->
+        <div class="card bg-blue-50 rounded-lg shadow-lg p-4">
+            <h5 class="text-xl text-center text-teal-600">
+                <a href="{% url 'upload_query' %}" class="text-teal-600 hover:text-teal-800">RAG Chatbot</a>
+            </h5>
+            <p class="text-center text-gray-600">Ask complex questions and retrieve relevant information using our RAG (Retrieve and Generate) chatbot powered by AI.</p>
+        </div>
+ 
+      
+    </div>
+</main>
+{% endblock %}
+ 

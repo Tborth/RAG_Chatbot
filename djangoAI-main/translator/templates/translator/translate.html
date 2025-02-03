@@ -1,0 +1,80 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Language Translator{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto mt-5">
+    <h1 class="text-center bg-green-600 text-white py-4 mb-6 text-2xl font-semibold rounded-md">Language Translator</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Left column: Form for translation -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4">Translate Text</h3>
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Model Choice -->
+                <div class="mb-4">
+                    <label for="{{ form.model_choice.id_for_label }}" class="block text-lg font-medium text-gray-700">{{ form.model_choice.label }}</label>
+                    {{ form.model_choice }}
+                </div>
+
+                <!-- API Key Field for OpenAI Model -->
+                <div id="api-key-field" class="mb-4" style="display: none;">
+                    <label for="{{ form.openai_api_key.id_for_label }}" class="block text-lg font-medium text-gray-700">{{ form.openai_api_key.label }}</label>
+                    {{ form.openai_api_key }}
+                </div>
+
+                <!-- Text Input -->
+                <div class="mb-4">
+                    <label for="{{ form.text.id_for_label }}" class="block text-lg font-medium text-gray-700">{{ form.text.label }}</label>
+                    {{ form.text }}
+                </div>
+
+                <!-- Target Language Selection -->
+                <div class="mb-4">
+                    <label for="{{ form.target_language.id_for_label }}" class="block text-lg font-medium text-gray-700">{{ form.target_language.label }}</label>
+                    {{ form.target_language }}
+                </div>
+
+                <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-green-700 transition duration-300">Translate</button>
+            </form>
+        </div>
+
+        <!-- Right column: Display translation result -->
+        {% if detected_language and translation %}
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4">Translation Result</h3>
+            <p><strong>Detected Language:</strong> {{ detected_language }}</p>
+            <p><strong>Translation:</strong></p>
+            <pre class="text-sm text-gray-800 break-words whitespace-pre-wrap">{{ translation }}</pre>
+            <a href="{% url 'translate_text' %}" class="block bg-gray-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-gray-600 transition-colors">Translate Another</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<br>
+<div class="text-center bg-gray-100 p-4 rounded-md "><p><a href="{% url 'home:index' %}" class="hover:text-blue-500">Back to Home</a></p></div>
+
+<!-- JavaScript to toggle visibility of the OpenAI API Key field -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modelTypeSelect = document.querySelector('select[name="model_choice"]');
+        const apiKeyField = document.getElementById('api-key-field');
+        const apiKeyInput = document.querySelector('input[name="openai_api_key"]');
+
+        // Toggle visibility of the API key input based on selected model type
+        modelTypeSelect.addEventListener('change', function () {
+            if (modelTypeSelect.value === 'openai') {
+                apiKeyField.style.display = 'block';
+                apiKeyInput.setAttribute('required', 'required');
+            } else {
+                apiKeyField.style.display = 'none';
+                apiKeyInput.removeAttribute('required');
+            }
+        });
+    });
+</script>
+{% endblock %}

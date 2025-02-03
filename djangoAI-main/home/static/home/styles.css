@@ -1,0 +1,114 @@
+/* Define the default light theme */
+:root {
+    --primary-bg-color: #fff;
+    --primary-text-color: #333;
+    --sidebar-bg-color: #f4f4f4;
+    --sidebar-text-color: #333;
+    --sidebar-hover-bg-color: #86f382;
+    --active-link-bg-color: #198754;
+}
+
+/* Dark mode theme */
+[data-theme='dark'] {
+    --primary-bg-color: #121212; /* Dark background */
+    --primary-text-color: #f4f4f4; /* Light text for dark background */
+    --sidebar-bg-color: #333; /* Dark sidebar */
+    --sidebar-text-color: #fff; /* Light text for sidebar */
+    --sidebar-hover-bg-color: #86f382; /* Keep same hover effect */
+    --active-link-bg-color: #198754;
+}
+
+/* Body styling */
+body {
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg-color);
+    color: var(--sidebar-text-color);
+    height: 100vh;
+    position:absolute;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+/* Sidebar navigation */
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+/* Sidebar menu links */
+.sidebar nav ul li a {
+    color: var(--sidebar-text-color);
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+/* Hover effect on sidebar menu */
+.sidebar nav ul li a:hover {
+    background-color: var(--sidebar-hover-bg-color);
+    border-radius: 4px;
+    padding-left: 30px;
+}
+
+/* Active state for the clicked nav link */
+.sidebar nav ul li a.active {
+    background-color: var(--active-link-bg-color);
+    color: #fff;  /* Change the text color to white when active */
+    font-weight: 700;
+    padding-left: 30px;
+}
+
+/* Example for hover effect on the active state */
+.sidebar nav ul li a.active:hover {
+    background-color: var(--sidebar-hover-bg-color);  /* Keep the hover effect when active */
+}
+
+/* Active link when clicked */
+.sidebar nav ul li a:active {
+    color: #fff;
+    background-color: var(--sidebar-hover-bg-color);  /* Optional: background color change on click */
+}
+
+/* Custom Card Hover Effect */
+.custom-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #ddd; /* Add a subtle border for the card */
+    border-radius: 8px; /* Optional: add border-radius for rounded corners */
+}
+
+.custom-card:hover {
+    transform: scale(1.2);  /* Slightly increase the size of the card */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);  /* Add shadow for emphasis */
+    cursor: pointer;  /* Change cursor to pointer when hovering */
+}
+
+/* Optional: You can also add some padding and margin adjustments for better spacing */
+.custom-card .card-body {
+    padding: 20px;  /* Increase padding inside the card */
+}
+
+/* Optional: Add hover effect to card titles */
+.custom-card:hover .card-title {
+    color: #007bff;  /* Change title color on hover */
+}
+
+/* Optional: Card background color on hover */
+.custom-card:hover {
+    background-color: #f9f9f9; /* Light background color on hover */
+}

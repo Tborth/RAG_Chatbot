@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="My Website: A collection of useful tools">
+    <meta name="author" content="Your Name">
+    <title>{% block title %}My Website{% endblock %}</title>
+
+    <!-- Link to the Tailwind CSS file -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Link to the main CSS file -->
+    <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+</head>
+<body class="font-sans bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Hamburger Button (Visible only on small screens) -->
+    <button id="hamburger" class="md:hidden fixed top-4 left-4 p-2 text-white bg-green-600 rounded-md z-50">
+        <span class="block w-6 h-0.5 bg-white mb-1 transition-transform duration-300 ease-in-out transform" id="hamburger-bar-1"></span>
+        <span class="block w-6 h-0.5 bg-white mb-1 transition-transform duration-300 ease-in-out transform" id="hamburger-bar-2"></span>
+        <span class="block w-6 h-0.5 bg-white mb-1 transition-transform duration-300 ease-in-out transform" id="hamburger-bar-3"></span>
+    </button>
+
+    <!-- Sidebar navigation -->
+    <div id="sidebar" class="sidebar bg-gray-100 h-5/6 p-6 fixed top-16 left-0 w-64 transform -translate-x-full md:translate-x-0 transition-all duration-300 ease-in-out z-50 overflow-y-auto">
+        <nav>
+            <ul class="space-y-4">
+                <li><a href="{% url 'home:index' %}" class="text-lg {% if request.path == '/' %}bg-green-500 text-white{% else %}text-gray-700 hover:text-blue-500{% endif %} py-2 px-4 rounded-md">Home</a></li>
+                <li><a href="{% url 'env_variable_form' %}" class="text-lg {% if request.path == '/env_variable_form/' %}bg-green-500 text-white{% else %}text-gray-700 hover:text-blue-500{% endif %} py-2 px-4 rounded-md">ENV Variable Form</a></li>
+                <li><a href="{% url 'upload_query' %}" class="text-lg {% if request.path == '/RAG_Chatbot/' %}bg-green-500 text-white{% else %}text-gray-700 hover:text-blue-500{% endif %} py-2 px-4 rounded-md">RAG Chatbot</a></li>
+                <li><a href="{% url 'uploaded_query_view' %}" class="text-lg {% if request.path == '/uploaded_query_view/' %}bg-green-500 text-white{% else %}text-gray-700 hover:text-blue-500{% endif %} py-2 px-4 rounded-md">RAG Chatbot With Uploaded File</a></li>
+
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main content area -->
+    <div id="content" class="flex-grow p-6 transition-all duration-300 ease-in-out ml-0 md:ml-64 mt-16">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-8 bg-gray-900 text-white py-4">
+    
+        {% comment %} <p><a href="{% url 'home:index' %}" class="hover:text-blue-500">Back to Home</a></p> {% endcomment %}
+    </footer>
+
+    <!-- JavaScript for Sidebar, Hamburger Toggle, and Menu Visibility -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const sidebarLinks = document.querySelectorAll('#sidebar a');
+            const hamburgerBars = [
+                document.getElementById('hamburger-bar-1'),
+                document.getElementById('hamburger-bar-2'),
+                document.getElementById('hamburger-bar-3')
+            ];
+
+            // Toggle sidebar visibility and hamburger bar transformation
+            hamburger.addEventListener('click', function () {
+                sidebar.classList.toggle('-translate-x-full');  // Toggle sidebar visibility
+                content.classList.toggle('ml-64');  // Shift content when sidebar is visible
+                
+                // Toggle hamburger to cross (X)
+                hamburgerBars[0].classList.toggle('rotate-45');
+                hamburgerBars[1].classList.toggle('opacity-0');
+                hamburgerBars[2].classList.toggle('-rotate-45');
+            });
+
+            // Hide sidebar when clicking any link in sidebar
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sidebar.classList.add('-translate-x-full');  // Hide sidebar
+                    content.classList.remove('ml-64');  // Adjust content when sidebar is hidden
+                    
+                    // Revert hamburger to normal state
+                    hamburgerBars[0].classList.remove('rotate-45');
+                    hamburgerBars[1].classList.remove('opacity-0');
+                    hamburgerBars[2].classList.remove('-rotate-45');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

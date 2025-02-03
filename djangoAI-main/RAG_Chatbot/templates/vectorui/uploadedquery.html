@@ -1,0 +1,87 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Upload and Query Vector Store{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center bg-green-600 text-white py-4 mb-6 text-2xl font-semibold rounded-md">Query With uploaded file</h1>
+
+    <!-- File Upload Form -->
+    <div class="bg-white shadow-lg rounded-md mb-4 p-4">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-700">Query With uploaded file</h3>
+        </div>
+        <div class="mt-4">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+                <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-green-700 transition duration-300">
+                    Upload and Process
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Query Response Section -->
+    {% if query_response %}
+        <div class="bg-white shadow-lg rounded-md mt-4 p-4">
+            <div>
+                <h3 class="text-xl font-semibold text-gray-700">Query Response</h3>
+            </div>
+            <div class="mt-2">
+                <p class="text-gray-800">{{ query_response }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Interaction History -->
+    {% if msg %}
+        <div class="bg-blue-100 p-4 rounded-md mt-4">
+            <p class="text-blue-800">{{ msg }}</p>
+        </div>
+    {% endif %}
+
+    {% comment %} <!-- Existing Vector Stores -->
+    <div class="mt-4">
+        <h3 class="text-xl font-semibold">Existing Vector Stores</h3>
+        <ul class="space-y-2">
+            {% for record in records %}
+                <li class="p-2 bg-gray-100 rounded-md shadow-md">{{ record.file_name }}</li>
+            {% endfor %}
+        </ul>
+    </div> {% endcomment %}
+</div>
+<div class="text-center bg-gray-100 p-4 rounded-md "><p><a href="{% url 'home:index' %}" class="hover:text-blue-500">Back to Home</a></p></div> 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dbTypeSelector = document.querySelector(".db-type-selector");
+        const vectorDbSelector = document.querySelector(".vector-db-selector");
+
+        dbTypeSelector.addEventListener("change", function () {
+            const selectedDbType = dbTypeSelector.value;
+            
+            // Get all options from vectorDB_field
+            const options = Array.from(vectorDbSelector.options);
+
+            // Show or hide options based on selected db_type
+            options.forEach(option => {
+                if (selectedDbType === "" || option.text.includes(`(${selectedDbType})`)) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
+            });
+
+            // Reset the vectorDB_field selection if the current choice is hidden
+            if (vectorDbSelector.selectedIndex > 0 && vectorDbSelector.options[vectorDbSelector.selectedIndex].style.display === "none") {
+                vectorDbSelector.selectedIndex = 0; // Reset to "None"
+            }
+        });
+    });
+</script>
+{% endblock %}

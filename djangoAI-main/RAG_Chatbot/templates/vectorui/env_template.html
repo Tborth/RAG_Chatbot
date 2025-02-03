@@ -1,0 +1,65 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Env Template{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center bg-green-600 text-white py-4 mb-6 text-2xl font-semibold rounded-md">Environment Variable Form</h1>
+
+    <!-- Form Section -->
+    <div class="bg-white shadow-lg rounded-md mb-4 p-4">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-700">Add New Environment Variable</h3>
+        </div>
+        <div class="mt-4">
+            <!-- Display messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} bg-yellow-100 p-2 rounded-md mb-2">
+                        <p class="text-yellow-800">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+                <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-blue-700 transition duration-300">
+                    Save
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Existing Environment Variables -->
+    <div class="bg-white shadow-lg rounded-md mt-4 p-4">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-700">Existing Environment Variables</h3>
+        </div>
+        <ul class="space-y-4 mt-4">
+            {% for variable in env_variables %}
+                <li class="bg-gray-100 p-4 rounded-md shadow-md flex justify-between items-center">
+                    <strong class="text-gray-800">{{ variable.env_variable_name }}</strong>
+                    <form method="post" action="{% url 'delete_env_variable' variable.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700 transition duration-300">
+                            Delete
+                        </button>
+                    </form>
+                </li>
+            {% empty %}
+                <p class="text-gray-600">No environment variables found.</p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<br>
+
+<div class="text-center bg-gray-100 p-4 rounded-md "><p><a href="{% url 'home:index' %}" class="hover:text-blue-500">Back to Home</a></p></div>
+
+{% endblock %}

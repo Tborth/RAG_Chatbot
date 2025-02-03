@@ -1,0 +1,27 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}API Chatbot{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center bg-green-600 text-white mb-4 py-2 rounded-md">Folder Name</h1>
+    <!-- API Chat Form -->
+    <div class="bg-white shadow-lg rounded-md p-4">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-700">Ask API Chatbot</h3>
+        </div>
+        <div class="mt-4">
+            <form method="post">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+                <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-green-700 transition duration-300">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

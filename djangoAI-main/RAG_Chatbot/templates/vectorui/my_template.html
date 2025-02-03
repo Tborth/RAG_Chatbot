@@ -1,0 +1,79 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Select a Database{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center bg-green-600 text-white py-4 mb-6 text-2xl font-semibold rounded-md">Select a Database</h1>
+    <p class="text-center mb-4">Choose a database type and corresponding vector store.</p>
+
+    <!-- Form for Database Selection -->
+    <div class="bg-white shadow-lg rounded-md mb-4 p-4">
+        <div>
+            <h3 class="text-xl font-semibold text-gray-700">Database and Vector Store Selection</h3>
+        </div>
+        <div class="mt-4">
+            <form method="POST" id="upload-form">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+                <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-md mt-4 hover:bg-green-700 transition duration-300">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript to dynamically update vectorstore options -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dbTypeSelect = document.querySelector('select[name="db_type"]');
+            const vectorstoreSelect = document.querySelector('select[name="vectorstore"]');
+
+            if (!dbTypeSelect || !vectorstoreSelect) {
+                return; // Exit if the required form elements are not found
+            }
+
+            // Function to update the vector store options based on the selected database
+            dbTypeSelect.addEventListener('change', function() {
+                const dbType = dbTypeSelect.value;
+
+                // Fetch the appropriate vector store options using AJAX or adjust the form field visibility
+                fetch(`/update_vectorstores/?db_type=${dbType}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear previous options
+                        vectorstoreSelect.innerHTML = '';
+
+                        // Check if vectorstores are present in the response
+                        if (data.vectorstores && data.vectorstores.length > 0) {
+                            // Populate vector store options dynamically
+                            data.vectorstores.forEach(function(store) {
+                                const option = document.createElement('option');
+                                option.value = store;
+                                option.textContent = store;
+                                vectorstoreSelect.appendChild(option);
+                            });
+                        } else {
+                            // If no vectorstores are found, add a default option
+                            const option = document.createElement('option');
+                            option.value = '';
+                            option.textContent = 'No vector stores available';
+                            vectorstoreSelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching vector stores:', error);
+                    });
+            });
+
+            // Trigger the change event on page load to populate vectorstore options (if db_type is already selected)
+            if (dbTypeSelect.value) {
+                dbTypeSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</div>
+{% endblock %}
